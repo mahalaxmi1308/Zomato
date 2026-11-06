@@ -4,9 +4,9 @@ pipeline {
         jdk 'jdk17'
         nodejs 'node23'
     }
-    environment {
+   /* environment {
         SCANNER_HOME=tool 'sonar-scanner'
-    }
+    }*/
     stages {
         stage ("clean workspace") {
             steps {
@@ -18,7 +18,7 @@ pipeline {
                 git 'https://github.com/KastroVKiran/Zomato-Project-Kastro.git'
             }
         }
-        stage("Sonarqube Analysis"){
+        /*stage("Sonarqube Analysis"){
             steps{
                 withSonarQubeEnv('sonar-server') {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=zomato \
@@ -32,13 +32,13 @@ pipeline {
                     waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token' 
                 }
             } 
-        }
+        }*/
         stage("Install NPM Dependencies") {
             steps {
                 sh "npm install"
             }
         }
-        stage('OWASP FS SCAN') {
+       /* stage('OWASP FS SCAN') {
             steps {
                 dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit -n', odcInstallation: 'DP-Check'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 sh "trivy fs . > trivy.txt"
             }
-        }
+        }*/
         stage ("Build Docker Image") {
             steps {
                 sh "docker build -t zomato ."
@@ -57,14 +57,14 @@ pipeline {
         stage ("Tag & Push to DockerHub") {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'docker') {
-                        sh "docker tag zomato kastrov/zomato:latest "
-                        sh "docker push kastrov/zomato:latest "
+                    withDockerRegistry(credentialsId: 'docker-cred') {
+                        sh "docker tag zomato mahalaxmi08/zomato:latest "
+                        sh "docker push mahalaxmi08/zomato:latest "
                     }
                 }
             }
         }
-        stage('Docker Scout Image') {
+       /* stage('Docker Scout Image') {
             steps {
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
@@ -74,14 +74,14 @@ pipeline {
                    }
                 }
             }
-        }
+        }*/
         stage ("Deploy to Container") {
             steps {
-                sh 'docker run -d --name zomato -p 3000:3000 kastrov/zomato:latest'
+                sh 'docker run -d --name zomato -p 3000:3000 mahalaxmi08/zomato:latest'
             }
         }
     }
-    post {
+    /*post {
     always {
         emailext attachLog: true,
             subject: "'${currentBuild.result}'",
@@ -104,5 +104,5 @@ pipeline {
             mimeType: 'text/html',
             attachmentsPattern: 'trivy.txt'
         }
-    }
+    }*/
 }
