@@ -38,7 +38,7 @@ environment {
         stage ("Tag & Push to DockerHub") {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'docker-cred') {
+                    withDockerRegistry(credentialsId: 'docker-key') {
                         sh "docker tag zomato mahalaxmi08/zomato:latest "
                         sh "docker push mahalaxmi08/zomato:latest "
                     }
