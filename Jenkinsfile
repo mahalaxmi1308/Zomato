@@ -44,15 +44,13 @@ environment {
                     }
                 }
             }
-        }
        
         stage ("Deploy to Container") {
             steps {
                 sh 'docker run -d --name zomato -p 3000:3000 mahalaxmi08/zomato:latest'
             }
         }
-    }
- stage('Deploy to EKS Cluster') {
+       stage('Deploy to EKS Cluster') {
             steps {
                 script {
                     sh '''
@@ -77,6 +75,4 @@ environment {
                 }
             }
         }
-    }
-   
-}
+    
