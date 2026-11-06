@@ -44,6 +44,7 @@ environment {
                     }
                 }
             }
+        }
        
         stage ("Deploy to Container") {
             steps {
@@ -75,5 +76,6 @@ environment {
                 }
             }
         }
-        }
+    }
+}
     
