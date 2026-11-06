@@ -48,6 +48,7 @@ environment {
        
         stage ("Deploy to Container") {
             steps {
+                sh "docker rm -f zomato || true"
                 sh 'docker run -d --name zomato -p 3000:3000 mahalaxmi08/zomato:latest'
             }
         }
