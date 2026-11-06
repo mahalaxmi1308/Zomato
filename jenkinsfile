@@ -4,9 +4,13 @@ pipeline {
         jdk 'jdk21'
         nodejs 'node23'
     }
-   /* environment {
-        SCANNER_HOME=tool 'sonar-scanner'
-    }*/
+environment {
+       // SCANNER_HOME = tool 'sonar-scanner'
+        DOCKER_IMAGE = 'mahalaxmi08/zomato:latest'
+        EKS_CLUSTER_NAME = 'zomato-cluster'
+        AWS_REGION = 'ap-southeast-2'
+    }
+
     stages {
         stage ("clean workspace") {
             steps {
@@ -15,7 +19,7 @@ pipeline {
         }
         stage ("Git Checkout") {
             steps {
-                git 'https://github.com/KastroVKiran/Zomato-Project-Kastro.git'
+                git 'https://github.com/mahalaxmi1308/Zomato.git'
             }
         }
         /*stage("Sonarqube Analysis"){
