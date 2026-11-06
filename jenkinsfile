@@ -95,8 +95,9 @@ pipeline {
                     kubectl config view
 
                     echo "Deploying application to EKS..."
-                    kubectl apply -f deployment.yaml
-                    kubectl apply -f service.yaml
+                    kubectl apply -f Kubernetes/deployment.yaml
+                    kubectl apply -f Kubernetes/service.yaml
+                    kubectl apply -f Kubernetes/node-service.yaml
 
                     echo "Verifying deployment..."
                     kubectl get pods
